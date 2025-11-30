@@ -122,13 +122,26 @@ const App: React.FC = () => {
   const undoLastMove = () => {
     setHistory(prev => {
       if (prev.length === 0) return prev;
-      const last = prev[prev.length - 1];
+      const aiColor = config.playerColor === Player.Black ? Player.White : Player.Black;
+      let newHist = prev.slice();
+      let last = newHist[newHist.length - 1];
       setGrid(g => {
         const ng = g.map(row => [...row]);
         ng[last.row][last.col] = Player.None;
         return ng;
       });
-      const newHist = prev.slice(0, -1);
+      newHist = newHist.slice(0, -1);
+      if (prev[prev.length - 1].player === aiColor && newHist.length > 0) {
+        const prevLastMove = newHist[newHist.length - 1];
+        if (prevLastMove.player === config.playerColor) {
+          setGrid(g => {
+            const ng = g.map(row => [...row]);
+            ng[prevLastMove.row][prevLastMove.col] = Player.None;
+            return ng;
+          });
+          newHist = newHist.slice(0, -1);
+        }
+      }
       const prevLast = newHist[newHist.length - 1] || null;
       setLastMove(prevLast ? { row: prevLast.row, col: prevLast.col } : null);
       setWinner(null);
