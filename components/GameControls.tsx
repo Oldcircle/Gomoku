@@ -51,7 +51,6 @@ const GameControls: React.FC<GameControlsProps> = ({ config, onConfigChange, onN
                 className="hidden" 
                 checked={config.difficulty === diff.value}
                 onChange={() => onConfigChange({ difficulty: diff.value })}
-                disabled={isPlaying}
               />
               <span className="font-serif text-sm">{diff.label}</span>
             </label>

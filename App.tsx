@@ -133,7 +133,7 @@ const App: React.FC = () => {
       setLastMove(prevLast ? { row: prevLast.row, col: prevLast.col } : null);
       setWinner(null);
       setStatus(GameStatus.Playing);
-      setCurrentPlayer(last.player);
+      setCurrentPlayer(config.playerColor);
       setEvaluation(50);
       setAnalysis(t.waiting);
       return newHist;
