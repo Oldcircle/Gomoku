@@ -7,9 +7,11 @@ interface GameControlsProps {
   onConfigChange: (newConfig: Partial<GameConfig>) => void;
   onNewGame: () => void;
   isPlaying: boolean;
+  onUndo: () => void;
+  canUndo: boolean;
 }
 
-const GameControls: React.FC<GameControlsProps> = ({ config, onConfigChange, onNewGame, isPlaying }) => {
+const GameControls: React.FC<GameControlsProps> = ({ config, onConfigChange, onNewGame, isPlaying, onUndo, canUndo }) => {
   const t = TRANSLATIONS[config.language];
 
   const difficultyLevels = [
@@ -86,12 +88,21 @@ const GameControls: React.FC<GameControlsProps> = ({ config, onConfigChange, onN
         </div>
       </div>
 
-      <button
-        onClick={onNewGame}
-        className="mt-2 w-full py-4 bg-red-800 hover:bg-red-700 text-white font-bold rounded-lg shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 font-serif text-lg tracking-wider"
-      >
-        {isPlaying ? t.restart : t.newGame}
-      </button>
+      <div className="flex gap-3">
+        <button
+          onClick={onNewGame}
+          className="mt-2 flex-1 py-4 bg-red-800 hover:bg-red-700 text-white font-bold rounded-lg shadow-lg transform hover:-translate-y-0.5 transition-all duration-200 font-serif text-lg tracking-wider"
+        >
+          {isPlaying ? t.restart : t.newGame}
+        </button>
+        <button
+          onClick={onUndo}
+          disabled={!canUndo}
+          className={`mt-2 flex-1 py-4 font-bold rounded-lg shadow-lg transition-all duration-200 font-serif text-lg tracking-wider border ${canUndo ? 'bg-stone-800 text-white border-stone-800 hover:bg-stone-700' : 'bg-stone-200 text-stone-500 border-stone-300 cursor-not-allowed'}`}
+        >
+          {t.undo}
+        </button>
+      </div>
     </div>
   );
 };

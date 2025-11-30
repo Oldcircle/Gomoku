@@ -28,6 +28,7 @@ export const TRANSLATIONS = {
     restart: "Restart",
     analysis: "Engine Insight",
     waiting: "Waiting for game start...",
+    undo: "Undo",
   },
   [Language.CN]: {
     title: "禅意五子棋",
@@ -54,6 +55,7 @@ export const TRANSLATIONS = {
     restart: "重新开始",
     analysis: "算法分析",
     waiting: "等待开始...",
+    undo: "悔棋",
   }
 };
 

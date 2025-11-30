@@ -14,6 +14,7 @@ const App: React.FC = () => {
   const [currentPlayer, setCurrentPlayer] = useState<Player>(Player.Black);
   const [lastMove, setLastMove] = useState<{ row: number; col: number } | null>(null);
   const [winner, setWinner] = useState<Player | null>(null);
+  const [history, setHistory] = useState<Array<{ row: number; col: number; player: Player }>>([]);
   
   // Evaluation State
   const [evaluation, setEvaluation] = useState<number>(50); // 50 is even
@@ -39,6 +40,7 @@ const App: React.FC = () => {
       return newGrid;
     });
     setLastMove({ row: r, col: c });
+    setHistory(prev => [...prev, { row: r, col: c, player }]);
 
     // Check Win
     // We need the *latest* grid, but React state is async. 
@@ -112,6 +114,7 @@ const App: React.FC = () => {
     setCurrentPlayer(Player.Black); // Black always starts
     setEvaluation(50);
     setAnalysis(t.waiting);
+    setHistory([]);
     
     // If player chose White, AI (Black) needs to move immediately via the useEffect
   };
@@ -166,12 +169,14 @@ const App: React.FC = () => {
 
         {/* Right Panel: Controls */}
         <div className="order-1 xl:order-2 w-full max-w-sm">
-           <GameControls 
-             config={config} 
-             onConfigChange={(newConf) => setConfig(p => ({ ...p, ...newConf }))}
-             onNewGame={startNewGame}
-             isPlaying={status === GameStatus.Playing}
-           />
+        <GameControls 
+          config={config} 
+          onConfigChange={(newConf) => setConfig(p => ({ ...p, ...newConf }))}
+          onNewGame={startNewGame}
+          isPlaying={status === GameStatus.Playing}
+          onUndo={undoLastMove}
+          canUndo={history.length > 0}
+        />
            
            {/* Decorative footer for sidebar */}
            <div className="mt-8 p-4 text-center opacity-60">
@@ -190,3 +195,23 @@ const App: React.FC = () => {
 };
 
 export default App;
+  const undoLastMove = () => {
+    setHistory(prev => {
+      if (prev.length === 0) return prev;
+      const last = prev[prev.length - 1];
+      setGrid(g => {
+        const ng = g.map(row => [...row]);
+        ng[last.row][last.col] = Player.None;
+        return ng;
+      });
+      const newHist = prev.slice(0, -1);
+      const prevLast = newHist[newHist.length - 1] || null;
+      setLastMove(prevLast ? { row: prevLast.row, col: prevLast.col } : null);
+      setWinner(null);
+      setStatus(GameStatus.Playing);
+      setCurrentPlayer(last.player); // return turn to the player who made the undone move
+      setEvaluation(50);
+      setAnalysis(t.waiting);
+      return newHist;
+    });
+  };
