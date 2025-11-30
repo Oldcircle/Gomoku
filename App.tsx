@@ -119,6 +119,27 @@ const App: React.FC = () => {
     // If player chose White, AI (Black) needs to move immediately via the useEffect
   };
 
+  const undoLastMove = () => {
+    setHistory(prev => {
+      if (prev.length === 0) return prev;
+      const last = prev[prev.length - 1];
+      setGrid(g => {
+        const ng = g.map(row => [...row]);
+        ng[last.row][last.col] = Player.None;
+        return ng;
+      });
+      const newHist = prev.slice(0, -1);
+      const prevLast = newHist[newHist.length - 1] || null;
+      setLastMove(prevLast ? { row: prevLast.row, col: prevLast.col } : null);
+      setWinner(null);
+      setStatus(GameStatus.Playing);
+      setCurrentPlayer(last.player);
+      setEvaluation(50);
+      setAnalysis(t.waiting);
+      return newHist;
+    });
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-8">
       
@@ -195,23 +216,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-  const undoLastMove = () => {
-    setHistory(prev => {
-      if (prev.length === 0) return prev;
-      const last = prev[prev.length - 1];
-      setGrid(g => {
-        const ng = g.map(row => [...row]);
-        ng[last.row][last.col] = Player.None;
-        return ng;
-      });
-      const newHist = prev.slice(0, -1);
-      const prevLast = newHist[newHist.length - 1] || null;
-      setLastMove(prevLast ? { row: prevLast.row, col: prevLast.col } : null);
-      setWinner(null);
-      setStatus(GameStatus.Playing);
-      setCurrentPlayer(last.player); // return turn to the player who made the undone move
-      setEvaluation(50);
-      setAnalysis(t.waiting);
-      return newHist;
-    });
-  };
