@@ -1,0 +1,60 @@
+import { Language } from './types';
+
+export const BOARD_SIZE = 19;
+
+export const TRANSLATIONS = {
+  [Language.EN]: {
+    title: "Zen Gomoku",
+    newGame: "New Game",
+    settings: "Settings",
+    difficulty: "AI Strength",
+    novice: "Novice (Casual)",
+    easy: "Easy (Apprentice)",
+    medium: "Medium (Warrior)",
+    hard: "Hard (Master)",
+    expert: "Expert (Grandmaster)",
+    playAs: "Play As",
+    black: "Black (First)",
+    white: "White (Second)",
+    turn: "Turn",
+    playerTurn: "Your Turn",
+    aiTurn: "AI Thinking...",
+    gameOver: "Game Over",
+    winner: "Wins!",
+    draw: "Draw",
+    advantage: "Board Status",
+    blackAdvantage: "Black Adv.",
+    whiteAdvantage: "White Adv.",
+    restart: "Restart",
+    analysis: "Engine Insight",
+    waiting: "Waiting for game start...",
+  },
+  [Language.CN]: {
+    title: "禅意五子棋",
+    newGame: "新对局",
+    settings: "设置",
+    difficulty: "棋力设定",
+    novice: "入门 (休闲)",
+    easy: "初级 (学徒)",
+    medium: "中级 (棋士)",
+    hard: "高级 (大师)",
+    expert: "特级 (宗师)",
+    playAs: "执子",
+    black: "执黑 (先手)",
+    white: "执白 (后手)",
+    turn: "当前回合",
+    playerTurn: "轮到你了",
+    aiTurn: "AI 深度思考中...",
+    gameOver: "对局结束",
+    winner: "获胜!",
+    draw: "平局",
+    advantage: "局势监控",
+    blackAdvantage: "黑方优势",
+    whiteAdvantage: "白方优势",
+    restart: "重新开始",
+    analysis: "算法分析",
+    waiting: "等待开始...",
+  }
+};
+
+export const INITIAL_GRID = Array(BOARD_SIZE).fill(null).map(() => Array(BOARD_SIZE).fill(0));

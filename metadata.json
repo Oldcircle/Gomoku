@@ -1,0 +1,5 @@
+{
+  "name": "Zen Gomoku (Ink & Stone)",
+  "description": "A minimalist, Chinese-style pseudo-3D Gomoku game powered by Gemini AI, featuring real-time advantage monitoring and bilingual support.",
+  "requestFramePermissions": []
+}
